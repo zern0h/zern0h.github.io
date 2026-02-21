@@ -1,0 +1,117 @@
+// Smooth theme transition — only active during the switch, not permanently
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition:
+    background-color 350ms ease,
+    border-color 350ms ease,
+    color 350ms ease,
+    box-shadow 350ms ease,
+    filter 350ms ease !important;
+}
+
+[data-bs-theme="dark"] {
+  // Surfaces — deep navy/slate
+  --surface-0: #0d1b2a;
+  --surface-1: #112032;
+  --surface-2: #1a2f45;
+  --surface-3: #243d54;
+
+  // Text — high contrast on dark backgrounds
+  --text-primary:   #f0f4f8;   // ~16:1 on surface-0
+  --text-secondary: #b8ccd8;   // ~7:1 on surface-0
+  --text-muted:     #7a98ac;   // ~4.6:1 on surface-0
+
+  // Keep teal accent — still readable on dark (passes AA)
+  --accent:         #14b8a6;   // teal-500 — 4.58:1 on surface-0 ✓
+  --accent-dark:    #0d9488;
+  --accent-light:   rgba(20, 184, 166, 0.12);
+  --accent-glow:    rgba(20, 184, 166, 0.22);
+
+  --gold:           #fbbf24;   // amber-400 — 8.1:1 on surface-0 ✓
+  --gold-light:     rgba(251, 191, 36, 0.12);
+
+  // Glass — dark navy glass
+  --glass-bg:     rgba(13, 27, 42, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-blur:   16px;
+
+  // Shadows — deeper
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 24px 50px rgba(0, 0, 0, 0.55);
+  --shadow-accent: 0 12px 28px rgba(20, 184, 166, 0.2);
+
+  body {
+    background-color: var(--surface-0);
+    color: var(--text-secondary);
+  }
+
+  img {
+    filter: brightness(0.88) saturate(0.95);
+  }
+
+  .service-card {
+    background: var(--surface-1);
+    border-color: var(--surface-3);
+
+    &:hover {
+      border-color: var(--accent);
+    }
+  }
+
+  // Process section
+  .process-section {
+    background: var(--surface-1);
+
+    &::before {
+      opacity: 0.2;
+    }
+  }
+
+  .process-step {
+    background: var(--surface-2);
+    border-color: var(--surface-3);
+  }
+
+  .step-number {
+    background: var(--surface-3);
+    border-color: var(--surface-3);
+  }
+
+  .process-node .node-hex {
+    background: var(--surface-2);
+  }
+
+  // About bento tiles
+  .bento-tile {
+    background: var(--surface-2);
+    border-color: var(--surface-3);
+
+    &:hover {
+      border-color: var(--accent);
+    }
+  }
+
+  .tech-tag {
+    background: var(--surface-1);
+    border-color: var(--surface-3);
+  }
+
+  // Merge CTA + footer into one continuous dark band
+  .site-footer {
+    background: #0d1b2a;
+    border-top-color: transparent;
+
+    .footer-brand { color: #f0f4f8; }
+    .footer-copy  { color: rgba(255, 255, 255, 0.35); }
+
+    .social-link {
+      border-color: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+}

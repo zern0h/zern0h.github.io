@@ -1,0 +1,412 @@
+// ============================================
+// Process Section — Circuit-Node Design
+// No gradients. Sharp geometry. Engineering aesthetic.
+// ============================================
+
+// Per-step accent colours
+// 01 Discover   = cyan  (#0891b2)
+// 02 Design     = teal  (--accent)
+// 03 Build&Test = gold  (--gold)
+// 04 Launch     = cyan  (#0891b2)
+
+.process-section {
+  padding: var(--section-py) 0;
+  background: var(--surface-1);
+  position: relative;
+  overflow: hidden;
+
+  // Subtle grid background — PCB substrate
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--surface-3) 1px, transparent 1px),
+      linear-gradient(90deg, var(--surface-3) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  // Top border accent
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4rem;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 0 0 2px 2px;
+  }
+
+  .process-intro {
+    max-width: 44rem;
+    margin: 0.75rem auto 0;
+    color: var(--text-muted);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+}
+
+// ——————————————————————————————————————————
+// Three-node diagram
+// ——————————————————————————————————————————
+.process-nodes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 3rem auto 4rem;
+  max-width: 720px;
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 0;
+    max-width: 220px;
+  }
+}
+
+.process-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+  cursor: default;
+
+  .node-hex {
+    width: 76px;
+    height: 76px;
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    background: var(--surface-0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: background var(--transition-base), box-shadow var(--transition-base);
+
+    // Border via stacked pseudo-hexagon
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+      background: var(--surface-3);
+      z-index: -1;
+      transition: background var(--transition-base);
+    }
+  }
+
+  .node-icon {
+    width: 1.875rem;
+    height: 1.875rem;
+    color: var(--accent);
+    transition: color var(--transition-base);
+    position: relative;
+    z-index: 1;
+  }
+
+  .node-label {
+    font-size: 0.78125rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 120px;
+    line-height: 1.4;
+    transition: color var(--transition-base);
+  }
+
+  // Per-node identity colours
+  &[data-node="dev"] {
+    .node-hex::before { background: rgba(13, 148, 136, 0.2); }
+    .node-hex { background: rgba(13, 148, 136, 0.06); }
+  }
+  &[data-node="test"] {
+    .node-hex::before { background: rgba(180, 83, 9, 0.18); }
+    .node-hex { background: rgba(180, 83, 9, 0.05); }
+    .node-icon { color: var(--gold); }
+  }
+  &[data-node="int"] {
+    .node-hex::before { background: rgba(8, 145, 178, 0.2); }
+    .node-hex { background: rgba(8, 145, 178, 0.06); }
+    .node-icon { color: #0891b2; }
+  }
+
+  // Hover — light the node
+  &:hover {
+    .node-hex {
+      background: var(--accent-light);
+      box-shadow: 0 0 0 4px var(--accent-glow), 0 0 20px var(--accent-glow);
+    }
+    .node-hex::before { background: var(--accent); }
+    .node-icon { color: var(--accent); }
+    .node-label { color: var(--accent); }
+
+    &[data-node="test"] {
+      .node-hex { background: var(--gold-light); box-shadow: 0 0 0 4px rgba(180, 83, 9, 0.15), 0 0 20px rgba(180, 83, 9, 0.15); }
+      .node-hex::before { background: var(--gold); }
+      .node-icon { color: var(--gold); }
+      .node-label { color: var(--gold); }
+    }
+    &[data-node="int"] {
+      .node-hex { background: rgba(8, 145, 178, 0.12); box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.15), 0 0 20px rgba(8, 145, 178, 0.15); }
+      .node-hex::before { background: #0891b2; }
+      .node-icon { color: #0891b2; }
+      .node-label { color: #0891b2; }
+    }
+  }
+}
+
+// Trace lines between nodes
+// Animated via stroke-dashoffset when .process-nodes gains .revealed
+.process-trace {
+  flex: 1;
+  height: 24px;
+  color: var(--surface-3);
+  min-width: 40px;
+  max-width: 120px;
+  margin-bottom: 2.4rem; // align with hex midpoint (above label)
+
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+  }
+
+  line {
+    stroke-dasharray: 120;
+    stroke-dashoffset: 120;
+    transition: stroke-dashoffset 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  // When parent nodes container is revealed, draw the lines
+  .revealed & line {
+    stroke-dashoffset: 0;
+  }
+
+  // Stagger: second trace draws after first
+  &:last-of-type line {
+    transition-delay: 0.25s;
+  }
+
+  @media (max-width: 640px) {
+    width: 2px;
+    height: 40px;
+    min-width: 0;
+    max-width: none;
+    margin-bottom: 0;
+    margin-right: 2.8rem;
+
+    svg { display: none; }
+
+    &::after {
+      content: '';
+      display: block;
+      width: 2px;
+      height: 100%;
+      border-left: 2px dashed var(--surface-3);
+    }
+  }
+}
+
+// Caption at the bottom of the process section
+.process-nodes-caption {
+  text-align: center;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 3rem;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+
+// ——————————————————————————————————————————
+// Four numbered step cards
+// ——————————————————————————————————————————
+.process-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+
+  // Tablet: 2-column with vertical timeline between rows
+  @media (max-width: 960px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    position: relative;
+
+    // Vertical hairline between the two rows
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--surface-3);
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+  }
+  @media (max-width: 540px) {
+    grid-template-columns: 1fr;
+
+    &::after { display: none; }
+  }
+}
+
+.process-step {
+  background: var(--surface-0);
+  border: 1.5px solid var(--surface-3);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
+
+  // Left accent bar — colour per step
+  &::before {
+    content: '';
+    position: absolute;
+    top: 1.25rem;
+    bottom: 1.25rem;
+    left: 0;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: var(--step-accent, var(--accent));
+    opacity: 0.5;
+    transition: opacity var(--transition-base);
+  }
+
+  // Per-step accent colours
+  &[data-step="01"] { --step-accent: #0891b2; }
+  &[data-step="02"] { --step-accent: var(--accent); }
+  &[data-step="03"] { --step-accent: var(--gold); }
+  &[data-step="04"] { --step-accent: #0891b2; }
+
+  // Horizontal connector line at desktop — sits outside the card now
+  // (handled by gap between cards; no pseudo connector needed)
+
+  &:hover {
+    border-color: var(--step-accent, var(--accent));
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+
+    &::before { opacity: 1; }
+
+    .step-number {
+      background: var(--step-accent, var(--accent));
+      border-color: var(--step-accent, var(--accent));
+      color: #fff;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--step-accent, var(--accent)) 20%, transparent);
+    }
+
+    .step-title { color: var(--step-accent, var(--accent)); }
+  }
+}
+
+// Discipline micro-badge per step
+.step-discipline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--step-accent, var(--accent));
+  background: color-mix(in srgb, var(--step-accent, var(--accent)) 10%, transparent);
+  border-radius: 100px;
+  padding: 0.2rem 0.55rem;
+  margin-bottom: 0.875rem;
+  align-self: flex-start;
+}
+
+.step-number {
+  font-family: 'Courier New', 'Courier', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--step-accent, var(--accent));
+  background: var(--surface-1);
+  border: 1.5px solid var(--surface-3);
+  border-radius: 6px;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+  transition:
+    background var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.step-body {
+  flex: 1;
+}
+
+.step-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+  transition: color var(--transition-base);
+}
+
+.step-desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.step-tags {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: auto;
+
+  li {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding-left: 1rem;
+    position: relative;
+    letter-spacing: 0.02em;
+
+    &::before {
+      content: '/';
+      position: absolute;
+      left: 0;
+      color: var(--step-accent, var(--accent));
+      font-weight: 700;
+    }
+  }
+}

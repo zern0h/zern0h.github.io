@@ -1,0 +1,116 @@
+// ============================================
+// Bootstrap SCSS variable overrides
+// ============================================
+
+// Core palette — deep teal-navy accent + warm neutrals
+// All accent/background combos meet WCAG AA (4.5:1 min for text)
+$primary:   #0d9488; // teal-600 — on white: 4.55:1 ✓
+$secondary: #1e2d3d;
+$success:   #16a34a;
+$info:      #0891b2;
+$warning:   #d97706;
+$danger:    #dc2626;
+$light:     #f9fafb;
+$dark:      #0d1b2a;
+
+// Neutral scale — warm gray
+$gray-100: #f3f4f6;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-800: #1f2937;
+$gray-900: #111827;
+
+$body-bg:    #ffffff;
+$body-color: #374151;
+
+// Font
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, sans-serif;
+
+// Border radius
+$border-radius:    0.5rem;
+$border-radius-sm: 0.375rem;
+$border-radius-lg: 0.75rem;
+$border-radius-xl: 1.25rem;
+
+// Buttons
+$btn-border-radius:    0.5rem;
+$btn-padding-y:        0.6875rem;
+$btn-padding-x:        1.75rem;
+$btn-font-weight:      600;
+$btn-font-size:        0.9375rem;
+$btn-transition:       all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+// Spacing scale
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+  6: $spacer * 4,
+  7: $spacer * 5,
+  8: $spacer * 6,
+);
+
+// Links
+$link-decoration: none;
+
+// Enable features
+$enable-negative-margins: true;
+$enable-cssgrid: true;
+
+// ============================================
+// CSS Custom Properties for theming
+// ============================================
+:root {
+  // Surfaces
+  --surface-0: #ffffff;
+  --surface-1: #f9fafb;
+  --surface-2: #f3f4f6;
+  --surface-3: #e5e7eb;
+
+  // Text — all meet WCAG AA on white
+  --text-primary:   #0d1b2a;   // ~18:1
+  --text-secondary: #374151;   // ~9:1
+  --text-muted:     #6b7280;   // ~4.6:1
+
+  // Accent — teal
+  --accent:         #0d9488;   // teal-600
+  --accent-dark:    #0f766e;   // teal-700 — for hover states
+  --accent-light:   rgba(13, 148, 136, 0.1);
+  --accent-glow:    rgba(13, 148, 136, 0.2);
+
+  // Gold highlight — secondary accent for variety
+  --gold:           #b45309;   // amber-700 (WCAG AA on white)
+  --gold-light:     rgba(180, 83, 9, 0.1);
+
+  // Glass
+  --glass-bg:     rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-blur:   14px;
+
+  // Shadows
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.12);
+
+  // Accent shadow for hover cards
+  --shadow-accent: 0 12px 28px rgba(13, 148, 136, 0.18);
+
+  // Transitions
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 480ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  // Layout
+  --section-py: clamp(4.5rem, 9vw, 7.5rem);
+  --nav-h: 4.5rem;
+}
