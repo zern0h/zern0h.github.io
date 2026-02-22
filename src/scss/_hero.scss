@@ -7,6 +7,12 @@
   overflow: hidden;
   background: var(--surface-0);
 
+  @media (max-width: 768px) {
+    padding-top: calc(var(--nav-h) + 2rem);
+    padding-bottom: 3.5rem;
+    align-items: flex-start;
+  }
+
 
   .hero-inner {
     position: relative;
@@ -166,6 +172,7 @@
       width: clamp(160px, 50vw, 240px);
       aspect-ratio: 1;
       order: -1;
+      margin-bottom: 0.5rem;
     }
 
     img {
