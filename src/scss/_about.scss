@@ -166,33 +166,34 @@
     }
   }
 
-  // Tech tags — shared between bento and anywhere else
-  .tech-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.35rem 0.75rem;
-    border-radius: 100px;
-    background: var(--surface-1);
-    color: var(--text-secondary);
-    border: 1.5px solid var(--surface-3);
-    white-space: nowrap;
-    transition: border-color var(--transition-fast), color var(--transition-fast);
+}
 
-    i {
-      font-size: 1rem;
-      line-height: 1;
-    }
+// Tech tags — global, used in About bento, Skills section, and anywhere else
+.tech-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 100px;
+  background: var(--surface-1);
+  color: var(--text-secondary);
+  border: 1.5px solid var(--surface-3);
+  white-space: nowrap;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
 
-    svg {
-      flex-shrink: 0;
-    }
+  i {
+    font-size: 1rem;
+    line-height: 1;
+  }
 
-    &:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    border-color: var(--accent);
+    color: var(--accent);
   }
 }
