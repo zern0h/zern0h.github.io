@@ -82,8 +82,25 @@
     border-color: var(--surface-3);
   }
 
-  .process-node .node-hex {
-    background: var(--surface-2);
+  .process-node[data-node="discover"] .node-hex,
+  .process-node[data-node="launch"] .node-hex {
+    background: color-mix(in srgb, #0891b2 10%, var(--surface-0));
+  }
+  .process-node[data-node="design"] .node-hex {
+    background: color-mix(in srgb, var(--accent) 10%, var(--surface-0));
+  }
+  .process-node[data-node="build"] .node-hex {
+    background: color-mix(in srgb, var(--gold) 8%, var(--surface-0));
+  }
+  .process-node[data-node="discover"]:hover .node-hex,
+  .process-node[data-node="launch"]:hover .node-hex {
+    background: color-mix(in srgb, #0891b2 18%, var(--surface-0));
+  }
+  .process-node[data-node="design"]:hover .node-hex {
+    background: color-mix(in srgb, var(--accent) 18%, var(--surface-0));
+  }
+  .process-node[data-node="build"]:hover .node-hex {
+    background: color-mix(in srgb, var(--gold) 18%, var(--surface-0));
   }
 
   // About bento tiles

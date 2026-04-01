@@ -77,6 +77,28 @@
   gap: 1rem;
   flex-shrink: 0;
   cursor: default;
+  position: relative;
+  isolation: isolate;
+  transition: transform var(--transition-base);
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  // Border ring — on the unclipped parent, sits behind .node-hex
+  &::before {
+    content: '';
+    width: 80px;
+    height: 80px;
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    background: var(--surface-3);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+    transition: background var(--transition-base);
+  }
 
   .node-hex {
     width: 76px;
@@ -87,18 +109,8 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    transition: background var(--transition-base), box-shadow var(--transition-base);
-
-    // Border via stacked pseudo-hexagon
-    &::before {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
-      background: var(--surface-3);
-      z-index: -1;
-      transition: background var(--transition-base);
-    }
+    z-index: 1;
+    transition: background var(--transition-base);
   }
 
   .node-icon {
@@ -122,54 +134,48 @@
     transition: color var(--transition-base);
   }
 
-  // Per-node identity colours (aligned with step accent colours)
+  // Per-node identity colours (border ring via ::before on parent, fill via .node-hex)
   // 01 Discover  = cyan  (#0891b2)
   // 02 Design    = teal  (--accent)
   // 03 Build     = gold  (--gold)
   // 04 Launch    = cyan  (#0891b2)
-  &[data-node="discover"] {
-    .node-hex::before { background: rgba(8, 145, 178, 0.2); }
-    .node-hex { background: rgba(8, 145, 178, 0.06); }
+  &[data-node="discover"],
+  &[data-node="launch"] {
+    &::before { background: rgba(8, 145, 178, 0.5); }
+    .node-hex { background: color-mix(in srgb, #0891b2 6%, var(--surface-0)); }
     .node-icon { color: #0891b2; }
   }
   &[data-node="design"] {
-    .node-hex::before { background: rgba(13, 148, 136, 0.2); }
-    .node-hex { background: rgba(13, 148, 136, 0.06); }
+    &::before { background: rgba(13, 148, 136, 0.5); }
+    .node-hex { background: color-mix(in srgb, var(--accent) 6%, var(--surface-0)); }
   }
   &[data-node="build"] {
-    .node-hex::before { background: rgba(180, 83, 9, 0.18); }
-    .node-hex { background: rgba(180, 83, 9, 0.05); }
+    &::before { background: rgba(180, 83, 9, 0.45); }
+    .node-hex { background: color-mix(in srgb, var(--gold) 5%, var(--surface-0)); }
     .node-icon { color: var(--gold); }
   }
-  &[data-node="launch"] {
-    .node-hex::before { background: rgba(8, 145, 178, 0.2); }
-    .node-hex { background: rgba(8, 145, 178, 0.06); }
-    .node-icon { color: #0891b2; }
+
+  // Hover — opaque .node-hex background so ::before border ring doesn't bleed through
+  &[data-node="discover"]:hover,
+  &[data-node="launch"]:hover {
+    &::before { background: #0891b2; }
+    .node-hex { background: color-mix(in srgb, #0891b2 14%, var(--surface-0)); }
+    .node-icon  { color: #0891b2; }
+    .node-label { color: #0891b2; }
   }
 
-  // Hover — light the node
-  &:hover {
-    .node-hex {
-      background: var(--accent-light);
-      box-shadow: 0 0 0 4px var(--accent-glow), 0 0 20px var(--accent-glow);
-    }
-    .node-hex::before { background: var(--accent); }
-    .node-icon { color: var(--accent); }
+  &[data-node="design"]:hover {
+    &::before { background: var(--accent); }
+    .node-hex { background: color-mix(in srgb, var(--accent) 14%, var(--surface-0)); }
+    .node-icon  { color: var(--accent); }
     .node-label { color: var(--accent); }
+  }
 
-    &[data-node="build"] {
-      .node-hex { background: var(--gold-light); box-shadow: 0 0 0 4px rgba(180, 83, 9, 0.15), 0 0 20px rgba(180, 83, 9, 0.15); }
-      .node-hex::before { background: var(--gold); }
-      .node-icon { color: var(--gold); }
-      .node-label { color: var(--gold); }
-    }
-    &[data-node="discover"],
-    &[data-node="launch"] {
-      .node-hex { background: rgba(8, 145, 178, 0.12); box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.15), 0 0 20px rgba(8, 145, 178, 0.15); }
-      .node-hex::before { background: #0891b2; }
-      .node-icon { color: #0891b2; }
-      .node-label { color: #0891b2; }
-    }
+  &[data-node="build"]:hover {
+    &::before { background: var(--gold); }
+    .node-hex { background: color-mix(in srgb, var(--gold) 14%, var(--surface-0)); }
+    .node-icon  { color: var(--gold); }
+    .node-label { color: var(--gold); }
   }
 }
 
