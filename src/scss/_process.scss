@@ -51,7 +51,7 @@
 }
 
 // ——————————————————————————————————————————
-// Three-node diagram
+// Four-node diagram
 // ——————————————————————————————————————————
 .process-nodes {
   display: flex;
@@ -59,7 +59,7 @@
   justify-content: center;
   gap: 0;
   margin: 3rem auto 4rem;
-  max-width: 720px;
+  max-width: 900px;
   position: relative;
   z-index: 1;
 
@@ -122,17 +122,26 @@
     transition: color var(--transition-base);
   }
 
-  // Per-node identity colours
-  &[data-node="dev"] {
+  // Per-node identity colours (aligned with step accent colours)
+  // 01 Discover  = cyan  (#0891b2)
+  // 02 Design    = teal  (--accent)
+  // 03 Build     = gold  (--gold)
+  // 04 Launch    = cyan  (#0891b2)
+  &[data-node="discover"] {
+    .node-hex::before { background: rgba(8, 145, 178, 0.2); }
+    .node-hex { background: rgba(8, 145, 178, 0.06); }
+    .node-icon { color: #0891b2; }
+  }
+  &[data-node="design"] {
     .node-hex::before { background: rgba(13, 148, 136, 0.2); }
     .node-hex { background: rgba(13, 148, 136, 0.06); }
   }
-  &[data-node="test"] {
+  &[data-node="build"] {
     .node-hex::before { background: rgba(180, 83, 9, 0.18); }
     .node-hex { background: rgba(180, 83, 9, 0.05); }
     .node-icon { color: var(--gold); }
   }
-  &[data-node="int"] {
+  &[data-node="launch"] {
     .node-hex::before { background: rgba(8, 145, 178, 0.2); }
     .node-hex { background: rgba(8, 145, 178, 0.06); }
     .node-icon { color: #0891b2; }
@@ -148,13 +157,14 @@
     .node-icon { color: var(--accent); }
     .node-label { color: var(--accent); }
 
-    &[data-node="test"] {
+    &[data-node="build"] {
       .node-hex { background: var(--gold-light); box-shadow: 0 0 0 4px rgba(180, 83, 9, 0.15), 0 0 20px rgba(180, 83, 9, 0.15); }
       .node-hex::before { background: var(--gold); }
       .node-icon { color: var(--gold); }
       .node-label { color: var(--gold); }
     }
-    &[data-node="int"] {
+    &[data-node="discover"],
+    &[data-node="launch"] {
       .node-hex { background: rgba(8, 145, 178, 0.12); box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.15), 0 0 20px rgba(8, 145, 178, 0.15); }
       .node-hex::before { background: #0891b2; }
       .node-icon { color: #0891b2; }
@@ -191,10 +201,10 @@
     stroke-dashoffset: 0;
   }
 
-  // Stagger: second trace draws after first
-  &:last-of-type line {
-    transition-delay: 0.25s;
-  }
+  // Stagger: traces draw sequentially
+  &:nth-of-type(2) line { transition-delay: 0.15s; }
+  &:nth-of-type(3) line { transition-delay: 0.30s; }
+  &:last-of-type line   { transition-delay: 0.45s; }
 
   @media (max-width: 640px) {
     width: 2px;
