@@ -1,7 +1,7 @@
 const ROLES = [
-  'Software Developer',
-  'Software Tester',
-  'Systems Integration Specialist',
+  'Software developer for practical business systems',
+  'Tester who thinks like a real user',
+  'Technical partner for growing teams',
 ];
 
 const TYPE_SPEED   = 60;   // ms per character typed
